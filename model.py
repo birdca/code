@@ -48,6 +48,7 @@ class Batch:
 
     def deallocate(self, order_line: OrderLine):
         if order_line in self._allocations:
+            self.quantity += order_line.quantity
             self._allocations.remove(order_line)
 
 
