@@ -6,19 +6,20 @@ class OutOfStock(Exception):
     pass
 
 
-@dataclass(frozen=True)
+#@dataclass(frozen=True)
+@dataclass(unsafe_hash=True)
 class OrderLine:
-    reference: str
+    orderid: str
     sku: str
-    quantity: int
+    qty: int
 
 
 @dataclass
 class Batch:
-    reference: str
+    ref: str
     sku: str
-    quantity: int
-    eta: date
+    qty: int
+    eta: date = None
     _allocations: set() = field(default_factory=set)
 
 
@@ -43,20 +44,20 @@ class Batch:
     def allocate(self, order_line: OrderLine):
         if self.can_allocate(order_line) and order_line not in self._allocations:
             self._allocations.add(order_line)
-            self.quantity -= order_line.quantity
+            self.qty -= order_line.qty
 
 
     def deallocate(self, order_line: OrderLine):
         if order_line in self._allocations:
-            self.quantity += order_line.quantity
+            self.qty += order_line.qty
             self._allocations.remove(order_line)
 
 
     def can_allocate(self, order_line: OrderLine) -> bool:
-        return self.sku == order_line.sku and self.quantity >= order_line.quantity
+        return self.sku == order_line.sku and self.qty >= order_line.qty
 
 
-def allocate(order_line: OrderLine, batches: list[Batch]) -> str:
+def allocation(order_line: OrderLine, batches: list[Batch]) -> str:
     try:
         batch = next(b for b in sorted(batches) if b.can_allocate(order_line))
     except StopIteration:
@@ -64,11 +65,11 @@ def allocate(order_line: OrderLine, batches: list[Batch]) -> str:
 
     batch.allocate(order_line)
 
-    return batch.reference
+    return batch.ref
     """
     batches = sorted(batches)
     for batch in batches:
         if batch.can_allocate(order_line):
             batch.allocate(order_line)
-            return batch.reference
+            return batch.ref
     """
