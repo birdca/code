@@ -12,7 +12,7 @@ https://github.com/python-leap/code/branches/all
 
 ## Exercises
 
-Branches for the exercises follow the convention `{chatper_name}_exercise`, eg 
+Branches for the exercises follow the convention `{chatper_name}_exercise`, eg
 https://github.com/python-leap/code/tree/chapter_04_service_layer_exercise
 
 
@@ -39,7 +39,7 @@ make all # builds, brings containers up, runs tests
 python3.8 -m venv .venv && source .venv/bin/activate # or however you like to create virtualenvs
 
 # for chapter 1
-pip install pytest 
+pip install pytest
 
 # for chapter 2
 pip install pytest sqlalchemy
@@ -73,4 +73,3 @@ pytest tests/e2e
 ## Makefile
 
 There are more useful commands in the makefile, have a look and try them out.
-

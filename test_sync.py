@@ -1,12 +1,7 @@
-import tempfile
-import shutil
-from pathlib import Path
-
 from sync import synchronise_dirs
 
 
 class FakeFileSystem(list):
-
     def copy(self, src, dst):
         self.append(("COPY", src, dst))
 
@@ -25,7 +20,7 @@ def test_when_a_file_exists_in_the_source_but_not_the_destination():
 
     synchronise_dirs(reader.pop, filesystem, "/src", "/dst")
 
-    assert filesystem  == [("COPY", "/src/file", "/dst/file")]
+    assert filesystem == [("COPY", "/src/file", "/dst/file")]
 
 
 def test_when_a_file_has_been_renamed_in_the_source():
@@ -36,7 +31,7 @@ def test_when_a_file_has_been_renamed_in_the_source():
 
     synchronise_dirs(reader.pop, filesystem, "/src", "/dst")
 
-    assert filesystem  == [("MOVE", "/dst/file1", "/dst/file")]
+    assert filesystem == [("MOVE", "/dst/file1", "/dst/file")]
 
 
 def test_same_name_with_different_content():
@@ -47,7 +42,7 @@ def test_same_name_with_different_content():
 
     synchronise_dirs(reader.pop, filesystem, "/src", "/dst")
 
-    assert filesystem  == [("DELETE", "/dst/file"), ("COPY", "/src/file", "/dst/file")]
+    assert filesystem == [("DELETE", "/dst/file"), ("COPY", "/src/file", "/dst/file")]
 
 
 def test_same_file_in_both_src_and_dst():
@@ -58,7 +53,7 @@ def test_same_file_in_both_src_and_dst():
 
     synchronise_dirs(reader.pop, filesystem, "/src", "/dst")
 
-    assert filesystem  == []
+    assert filesystem == []
 
 
 """

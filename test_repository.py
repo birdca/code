@@ -22,7 +22,7 @@ def test_repository_can_retrieve_a_batch_with_allocations(session):
     repo.add(batch1)
     batch2 = Batch("batch2", "sku1", 100)
     repo.add(batch2)
-    batch_ref = allocation(order_line, [batch1, batch2])
+    allocation(order_line, [batch1, batch2])
     session.commit()
 
     query_batch1 = repo.get("batch1")

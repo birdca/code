@@ -4,9 +4,8 @@ from model import Batch
 
 
 class AbstractRepository(abc.ABC):
-
     def add(self, batch: Batch):
-      raise NotImplementedError
+        raise NotImplementedError
 
     def get(self) -> Batch:
         raise NotImplementedError

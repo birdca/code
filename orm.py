@@ -1,8 +1,7 @@
-from sqlalchemy import Table, Column, Integer, String, Date, ForeignKey
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import registry, relationship
 
-from model import OrderLine, Batch
-
+from model import Batch, OrderLine
 
 mapper_registry = registry()
 
@@ -20,7 +19,7 @@ order_lines = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("sku", String(255), nullable=False),
     Column("qty", Integer, nullable=False),
-    Column("orderid", String(255), nullable=False)
+    Column("orderid", String(255), nullable=False),
 )
 
 batches = Table(
@@ -29,7 +28,7 @@ batches = Table(
     Column("ref", String(255), primary_key=True),
     Column("sku", String(255), nullable=False),
     Column("qty", Integer, nullable=False),
-    Column("eta", Date, nullable=True)
+    Column("eta", Date, nullable=True),
 )
 
 allocations = Table(
@@ -40,8 +39,15 @@ allocations = Table(
     Column("batch_id", ForeignKey("batches.ref")),
 )
 
+
 def start_mappers():
     mapper_registry.map_imperatively(OrderLine, order_lines)
-    mapper_registry.map_imperatively(Batch, batches, properties={
-        "_allocations": relationship(OrderLine, secondary=allocations, collection_class=set)
-    })
+    mapper_registry.map_imperatively(
+        Batch,
+        batches,
+        properties={
+            "_allocations": relationship(
+                OrderLine, secondary=allocations, collection_class=set
+            )
+        },
+    )

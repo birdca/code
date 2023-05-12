@@ -1,9 +1,3 @@
-import hashlib
-import os
-import shutil
-from pathlib import Path
-
-
 """
 BLOCKSIZE = 65536
 
@@ -61,14 +55,16 @@ def synchronise_dirs(reader, filesystem, src_root, dst_root):
     # rm: hash1 is not in hash2
     for diff in kv2 - kv1:
         if diff[0] in k1 & k2:
-            filesystem.move(dst_root + '/' + diff[1], dst_root + '/' + src_hashes[diff[0]])
+            filesystem.move(
+                dst_root + "/" + diff[1], dst_root + "/" + src_hashes[diff[0]]
+            )
         else:
-            filesystem.delete(dst_root + '/' + diff[1])
+            filesystem.delete(dst_root + "/" + diff[1])
 
     # cp: in hash1 but not in hash2
     for diff in kv1 - kv2:
         if diff[0] not in k1 & k2:
-            filesystem.copy(src_root + '/' + diff[1], dst_root + '/' + diff[1])
+            filesystem.copy(src_root + "/" + diff[1], dst_root + "/" + diff[1])
 
 
 """
