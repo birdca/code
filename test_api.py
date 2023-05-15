@@ -103,4 +103,4 @@ def test_400_message_for_invalid_sku(add_stock):
     r = requests.post(f"{url}/allocate", json=data)
 
     assert r.status_code == 400
-    assert r.json()["detail"] == f"SKU {sku2} not found"
+    assert r.json()["detail"] == f"Invalid sku {sku2}"
