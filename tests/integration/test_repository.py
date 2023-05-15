@@ -1,5 +1,5 @@
-from model import Batch, OrderLine, allocation
-from repository import SqlAlchemyRepository
+from adapters.repository import SqlAlchemyRepository
+from domain.model import Batch, OrderLine, allocation
 
 
 def test_repository_can_save_a_batch(session):

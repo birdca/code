@@ -2,7 +2,7 @@ from datetime import date
 
 from sqlalchemy import text
 
-from model import Batch, OrderLine
+from domain.model import Batch, OrderLine
 
 
 def test_orderline_mapper_can_load_lines(session):

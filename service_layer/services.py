@@ -1,5 +1,5 @@
-import model
-from repository import AbstractRepository
+from adapters.repository import AbstractRepository
+from domain.model import OrderLine, allocation
 
 
 class InvalidSku(Exception):
@@ -13,14 +13,13 @@ def is_valid_sku(sku, batches):
         return False
 
 
-def allocate(line: model.OrderLine, repo: AbstractRepository, session) -> str:
+def allocate(line: OrderLine, repo: AbstractRepository, session) -> str:
     batches = repo.list()
-    print(batches)
 
     if not is_valid_sku(line.sku, batches):
         raise InvalidSku(f"Invalid sku {line.sku}")
 
-    batchref = model.allocation(line, batches)
+    batchref = allocation(line, batches)
     session.commit()
 
     return batchref

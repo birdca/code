@@ -5,9 +5,9 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import clear_mappers, sessionmaker
 
 import config
-from model import Batch
-from orm import mapper_registry, start_mappers
-from repository import SqlAlchemyRepository
+from adapters.orm import mapper_registry, start_mappers
+from adapters.repository import SqlAlchemyRepository
+from domain.model import Batch
 
 
 @pytest.fixture

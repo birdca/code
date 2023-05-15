@@ -3,12 +3,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 import config
-import model
-import orm
-import repository
-import services
+from adapters.orm import start_mappers
+from adapters.repository import SqlAlchemyRepository
+from domain.model import OrderLine, OutOfStock
+from service_layer.services import allocate, InvalidSku
 
-orm.start_mappers()
+
+start_mappers()
 get_session = sessionmaker(bind=create_engine(config.get_sqlite_uri()))
 app = FastAPI()
 
@@ -19,12 +20,12 @@ async def root():
 
 
 @app.post("/allocate")
-async def allocate_endpoint(line: model.OrderLine):
+async def allocate_endpoint(line: OrderLine):
     session = get_session()
-    repo = repository.SqlAlchemyRepository(session)
+    repo = SqlAlchemyRepository(session)
     try:
-        batchref = services.allocate(line, repo, session)
-    except (model.OutOfStock, services.InvalidSku) as e:
+        batchref = allocate(line, repo, session)
+    except (OutOfStock, InvalidSku) as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
     session.commit()
